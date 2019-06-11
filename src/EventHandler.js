@@ -54,9 +54,7 @@ class EventHandler extends Component {
   }
 
   render() {
-    const { children } = this.props;
-    if (children == null) return null;
-    return children;
+    return <React.Fragment>{this.props.children}</React.Fragment>;
   }
 }
 
