@@ -10,7 +10,9 @@ class EventHandler extends Component {
   componentDidMount() {
     const { eventReceiver, resource, options } = this.props;
     if (eventReceiver == null) return;
-    this.unsubscribe = eventReceiver.subscribe(resource, options, data => this.handleNotify(data));
+    this.unsubscribe = eventReceiver.subscribe(resource, options, (data) =>
+      this.handleNotify(data),
+    );
   }
 
   componentDidUpdate(prevProps) {
@@ -28,7 +30,7 @@ class EventHandler extends Component {
       if (this.unsubscribe) this.unsubscribe();
       this.unsubscribe = undefined;
       if (eventReceiver == null) return;
-      this.unsubscribe = eventReceiver.subscribe(resource, options, data =>
+      this.unsubscribe = eventReceiver.subscribe(resource, options, (data) =>
         this.handleNotify(data),
       );
     }
@@ -54,7 +56,7 @@ class EventHandler extends Component {
   }
 
   render() {
-    return <React.Fragment>{this.props.children}</React.Fragment>;
+    return <>{this.props.children}</>;
   }
 }
 
@@ -72,23 +74,27 @@ const composeHandlers = (...handlers) => (...args) =>
     false,
   );
 
-const withResource = ChildComponent => {
-  const WithResource = props => (
+/* eslint-disable react/jsx-props-no-spreading */
+const withResource = (ChildComponent) => {
+  const WithResource = (props) => (
     <ResourceConsumer>
-      {resource => <ChildComponent resource={resource} {...props} />}
+      {(resource) => <ChildComponent resource={resource} {...props} />}
     </ResourceConsumer>
   );
   return WithResource;
 };
+/* eslint-enable react/jsx-props-no-spreading */
 
-const withContext = ChildComponent => {
-  const WithContext = props => (
+/* eslint-disable react/jsx-props-no-spreading */
+const withContext = (ChildComponent) => {
+  const WithContext = (props) => (
     <ConfigContext.Consumer>
       {({ eventReceiver }) => <ChildComponent eventReceiver={eventReceiver} {...props} />}
     </ConfigContext.Consumer>
   );
   return WithContext;
 };
+/* eslint-enable react/jsx-props-no-spreading */
 
 export default withContext(withResource(EventHandler));
 export { composeHandlers };
