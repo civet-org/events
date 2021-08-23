@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { ResourceConsumer } from '@civet/core';
 import deepEquals from 'fast-deep-equal';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 import { ConfigContext } from './context';
 import { eventReceiverPropType } from './EventReceiver';
@@ -68,11 +68,13 @@ EventHandler.propTypes = {
   children: PropTypes.node,
 };
 
-const composeHandlers = (...handlers) => (...args) =>
-  handlers.reduce(
-    (sum, handler) => sum || (typeof handler === 'function' ? handler(...args) : false),
-    false,
-  );
+const composeHandlers =
+  (...handlers) =>
+  (...args) =>
+    handlers.reduce(
+      (sum, handler) => sum || (typeof handler === 'function' ? handler(...args) : false),
+      false,
+    );
 
 /* eslint-disable react/jsx-props-no-spreading */
 const withResource = (ChildComponent) => {
