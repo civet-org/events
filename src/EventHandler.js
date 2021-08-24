@@ -42,17 +42,19 @@ class EventHandler extends Component {
   }
 
   handleNotify(data) {
-    const { eventReceiver, resource, onEvent } = this.props;
+    const { eventReceiver, resource, onEvent, onNotify } = this.props;
     if (eventReceiver == null || data == null || (data.length || 0) === 0) return;
+    let unhandledEvents;
     if (typeof onEvent === 'function') {
-      const allEventsHandled = data.reduce(
-        (othersHandled, event) => onEvent(event) && othersHandled,
-        true,
-      );
-      if (allEventsHandled) return;
+      unhandledEvents = data.filter((event) => !onEvent(event));
+    } else {
+      unhandledEvents = data;
     }
-    if (resource == null || typeof resource.notify !== 'function') return;
-    resource.notify();
+    if (unhandledEvents.length === 0 || resource == null || typeof resource.notify !== 'function') {
+      return;
+    }
+    const promise = resource.notify();
+    if (typeof onNotify === 'function') promise.then((result) => onNotify(result, unhandledEvents));
   }
 
   render() {
@@ -65,6 +67,7 @@ EventHandler.propTypes = {
   resource: PropTypes.object,
   options: PropTypes.object,
   onEvent: PropTypes.func,
+  onNotify: PropTypes.func,
   children: PropTypes.node,
 };
 

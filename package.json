@@ -39,7 +39,7 @@
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-react": "^7.14.5",
-    "@civet/core": "^0.6.7",
+    "@civet/core": "^0.6.8",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
     "cross-var": "^1.1.0",
@@ -58,7 +58,7 @@
     "rimraf": "^3.0.2"
   },
   "peerDependencies": {
-    "@civet/core": ">= 0.1.1",
+    "@civet/core": ">= 0.6.8",
     "react": ">= 16.8",
     "react-dom": ">= 16.8"
   },
