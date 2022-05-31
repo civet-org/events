@@ -7,6 +7,7 @@ import { useConfigContext } from './context';
 function useEventHandler({
   eventReceiver: eventReceiverProp,
   resource: resourceProp,
+  disabled,
   options: optionsProp,
   onEvent,
   onNotify,
@@ -23,7 +24,7 @@ function useEventHandler({
   }
 
   React.useEffect(() => {
-    if (eventReceiver == null) return undefined;
+    if (eventReceiver == null || disabled) return undefined;
     const unsubscribe = eventReceiver.subscribe(resource, options, (data) => {
       if ((data?.length || 0) === 0) return;
       let unhandledEvents;
@@ -39,7 +40,7 @@ function useEventHandler({
       }
     });
     return unsubscribe;
-  }, [eventReceiver, resource?.request, options, onEvent, onNotify]);
+  }, [eventReceiver, !disabled, resource?.request, options, onEvent, onNotify]);
 }
 
 export default useEventHandler;

@@ -13,6 +13,7 @@ function EventHandler({ children, ...props }) {
 EventHandler.propTypes = {
   eventReceiver: eventReceiverPropType.isRequired,
   resource: PropTypes.object,
+  disabled: PropTypes.bool,
   options: PropTypes.object,
   onEvent: PropTypes.func,
   onNotify: PropTypes.func,
