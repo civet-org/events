@@ -1,7 +1,6 @@
 import { useResourceContext } from '@civet/core';
 import deepEquals from 'fast-deep-equal';
-import React from 'react';
-
+import { useEffect, useState } from 'react';
 import { useConfigContext } from './context';
 
 function useEventHandler({
@@ -16,15 +15,22 @@ function useEventHandler({
   const eventReceiver = eventReceiverProp || configContext.eventReceiver;
 
   const resourceContext = useResourceContext();
-  const resource = resourceProp || resourceContext;
+  const currentResource = resourceProp || resourceContext;
 
-  const [options, setOptions] = React.useState(optionsProp);
+  const [resource, setResource] = useState(currentResource);
+  if (currentResource?.request !== resource?.request) {
+    setResource(currentResource);
+  }
+
+  const [options, setOptions] = useState(optionsProp);
   if (!deepEquals(options, optionsProp)) {
     setOptions(optionsProp);
   }
 
-  React.useEffect(() => {
-    if (eventReceiver == null || disabled) return undefined;
+  const isDisabled = !!disabled;
+
+  useEffect(() => {
+    if (eventReceiver == null || isDisabled) return undefined;
     const unsubscribe = eventReceiver.subscribe(resource, options, (data) => {
       if ((data?.length || 0) === 0) return;
       let unhandledEvents;
@@ -40,7 +46,7 @@ function useEventHandler({
       }
     });
     return unsubscribe;
-  }, [eventReceiver, !disabled, resource?.request, options, onEvent, onNotify]);
+  }, [eventReceiver, isDisabled, resource, options, onEvent, onNotify]);
 }
 
 export default useEventHandler;

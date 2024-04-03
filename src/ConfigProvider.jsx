@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
-
-import { ConfigContext } from './context';
 import { eventReceiverPropType } from './EventReceiver';
+import { ConfigContext } from './context';
 
 const ConfigProvider = ({ eventReceiver, children }) => (
   <ConfigContext.Provider value={{ eventReceiver }}>{children}</ConfigContext.Provider>
