@@ -1,6 +1,6 @@
 {
   "name": "@civet/events",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Civet",
   "main": "./lib/index.js",
   "scripts": {
@@ -52,17 +52,17 @@
     "eslint-plugin-prettier": "3.0.0",
     "eslint-plugin-react": "7.11.1",
     "prettier": "1.15.3",
-    "react": "16.6.3",
-    "react-dom": "16.6.3",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "rimraf": "2.6.2"
   },
   "peerDependencies": {
     "@civet/core": ">= 0.1.1",
-    "react": ">= 16.3.0",
-    "react-dom": ">= 16.3.0"
+    "react": ">= 16.8",
+    "react-dom": ">= 16.8"
   },
   "dependencies": {
     "fast-deep-equal": "2.0.1",
-    "prop-types": "15.6.2"
+    "prop-types": "15.7.2"
   }
 }
