@@ -14,7 +14,7 @@ class EventReceiver {
   }
 }
 
-const isEventReceiver = eventReceiver => eventReceiver instanceof EventReceiver;
+const isEventReceiver = (eventReceiver) => eventReceiver instanceof EventReceiver;
 
 const eventReceiverPropType = PropTypes.instanceOf(EventReceiver);
 
