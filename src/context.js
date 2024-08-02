@@ -1,5 +1,5 @@
-import React from 'react';
+import { createContext, useContext } from 'react';
 
-export const ConfigContext = React.createContext({});
+export const ConfigContext = createContext({});
 ConfigContext.displayName = 'Events.ConfigContext';
-export const useConfigContext = () => React.useContext(ConfigContext);
+export const useConfigContext = () => useContext(ConfigContext);
