@@ -1,6 +1,6 @@
 {
   "name": "@civet/events",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Civet",
   "main": "./lib/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   "bugs": {
     "url": "https://github.com/civet-org/events/issues"
   },
-  "homepage": "https://civet.hatsu.moe/",
+  "homepage": "https://civet.js.org/",
   "devDependencies": {
     "@babel/cli": "7.1.5",
     "@babel/core": "7.1.6",
