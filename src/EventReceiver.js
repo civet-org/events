@@ -5,7 +5,6 @@ class EventReceiver {
     if (typeof handler !== 'function') throw new Error('Handler must be a function');
     const unsubscribe = this.handleSubscribe(resource, options, handler);
     if (typeof unsubscribe !== 'function') {
-      // eslint-disable-next-line no-console
       console.warn(
         'EventReceiver.handleSubscribe should return a callback to cancel the subscription. Ignoring this warning may result in the execution of obsolete handlers and potential memory leaks.',
       );
