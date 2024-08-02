@@ -3,12 +3,25 @@ import deepEquals from 'fast-deep-equal';
 import { useEffect, useState } from 'react';
 import { useConfigContext } from './context';
 
+/**
+ * Enables automatic updating for a Resource component or useResource hook by subscribing to an EventReceiver.
+ *
+ * Necessary configuration that is not directly specified is taken from the ConfigContext and ResourceContext.
+ *
+ * onEvent can be used to directly access events allowing you to add custom event logic to your components.
+ */
 function useEventHandler({
+  /** EventReceiver to be used */
   eventReceiver: eventReceiverProp,
+  /** ResourceContext to be used */
   resource: resourceProp,
+  /** Disables the event handler */
   disabled,
+  /** Options for the EventReceiver */
   options: optionsProp,
+  /** Callback to filter events and handle your own event logic - if true is returned, the event does not cause the resource to update */
   onEvent,
+  /** Provides information on when the resource has been requested to update - events contains the events that lead to the update */
   onNotify,
 }) {
   const configContext = useConfigContext();
