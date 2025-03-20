@@ -40,7 +40,7 @@ function useEventHandler({
     setOptions(optionsProp);
   }
 
-  const isDisabled = !!disabled;
+  const isDisabled = Boolean(disabled || currentResource?.isEmpty);
 
   useEffect(() => {
     if (eventReceiver == null || isDisabled) return undefined;
