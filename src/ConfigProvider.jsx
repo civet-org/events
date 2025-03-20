@@ -3,7 +3,9 @@ import { eventReceiverPropType } from './EventReceiver';
 import { ConfigContext } from './context';
 
 const ConfigProvider = ({ eventReceiver, children }) => (
-  <ConfigContext.Provider value={{ eventReceiver }}>{children}</ConfigContext.Provider>
+  <ConfigContext.Provider value={{ eventReceiver }}>
+    {children}
+  </ConfigContext.Provider>
 );
 
 ConfigProvider.propTypes = {

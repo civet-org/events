@@ -52,7 +52,12 @@ function useEventHandler({
       } else {
         unhandledEvents = data;
       }
-      if (unhandledEvents.length === 0 || typeof resource?.notify !== 'function') return;
+      if (
+        unhandledEvents.length === 0 ||
+        typeof resource?.notify !== 'function'
+      ) {
+        return;
+      }
       const promise = resource.notify();
       if (typeof onNotify === 'function') {
         promise.then((result) => onNotify(result, unhandledEvents));
