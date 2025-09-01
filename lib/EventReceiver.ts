@@ -14,9 +14,9 @@ export default abstract class EventReceiver<
   readonly _inferOptions!: Options;
 
   subscribe<
-    ResourceI extends Resource,
-    OptionsI extends Options,
-    EventI extends Event,
+    ResourceI extends Resource = Resource,
+    OptionsI extends Options = Options,
+    EventI extends Event = Event,
   >(
     resource: ResourceI,
     options: OptionsI | undefined,
