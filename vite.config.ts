@@ -19,7 +19,7 @@ export default defineConfig({
     },
     copyPublicDir: false,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: ['@civet/core', 'react', 'react-dom', 'react/jsx-runtime'],
       output: {
         globals: {
           react: 'React',

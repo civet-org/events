@@ -1,4 +1,4 @@
-import { DataProvider, type ContinuousGet } from '@civet/core';
+import { DataProvider, Meta, type ContinuousGet } from '@civet/core';
 
 export type DemoQuery =
   | {
@@ -23,6 +23,7 @@ export default class DemoDataProvider extends DataProvider<
   DemoItem,
   DemoQuery,
   DemoOptions,
+  Meta,
   DemoInstance
 > {
   static TEST = true;
