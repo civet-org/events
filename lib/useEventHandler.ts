@@ -18,8 +18,8 @@ import { useConfigContext } from './context';
  */
 export default function useEventHandler<
   EventReceiverI extends GenericEventReceiver,
-  ResourceI extends
-    InferResource<EventReceiverI> = InferResource<EventReceiverI>,
+  ResourceI extends InferResource<EventReceiverI> =
+    InferResource<EventReceiverI>,
   OptionsI extends InferOptions<EventReceiverI> = InferOptions<EventReceiverI>,
   EventI extends InferEvent<EventReceiverI> = InferEvent<EventReceiverI>,
 >({
