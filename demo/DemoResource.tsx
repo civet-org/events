@@ -1,8 +1,6 @@
-import { useResource, type ResourceContextValue } from '@civet/core';
-import useEventHandler from '@/useEventHandler';
-import DemoDataProvider, { type DemoItem } from './DemoDataProvider';
-import type { DemoEvent, DemoOptions } from './DemoEventReceiver';
-import type DemoEventReceiver from './DemoEventReceiver';
+import { useResource } from '@civet/core';
+import { type DemoDataProviderType, type DemoItem } from './DemoDataProvider';
+import type { DemoEvent } from './DemoEventReceiver';
 
 type HahaItem = DemoItem & {
   name: string;
@@ -13,21 +11,14 @@ type HahaEvent = DemoEvent & {
 };
 
 export default function DemoResource() {
-  const resource = useResource<DemoDataProvider, HahaItem>({
+  const resource = useResource<DemoDataProviderType, HahaItem[]>({
     name: 'haha',
     query: undefined,
-  });
-
-  useEventHandler<
-    DemoEventReceiver,
-    ResourceContextValue<DemoDataProvider>,
-    DemoOptions,
-    HahaEvent
-  >({
-    resource,
-    onEvent: (event: HahaEvent) => {
-      console.log('Got event', event.name);
-      return false;
+    events: {
+      onEvent: (event: unknown) => {
+        console.log('Got event', (event as HahaEvent).name);
+        return false;
+      },
     },
   });
 
