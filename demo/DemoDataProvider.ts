@@ -1,4 +1,10 @@
-import { DataProvider, Meta, type ContinuousGet } from '@civet/core';
+import {
+  DataProvider,
+  Meta,
+  type ContinuousGet,
+  type GenericObject,
+} from '@civet/core';
+import eventPlugin from '@/eventPlugin';
 
 export type DemoQuery =
   | {
@@ -19,12 +25,12 @@ export type DemoInstance = {
   instanceID: string;
 };
 
-export default class DemoDataProvider extends DataProvider<
+class DemoDataProvider extends DataProvider<
   DemoItem,
   DemoQuery,
   DemoOptions,
-  Meta,
-  DemoInstance
+  Meta<GenericObject, DemoInstance>,
+  DemoItem[]
 > {
   static TEST = true;
 
@@ -37,9 +43,13 @@ export default class DemoDataProvider extends DataProvider<
     return { instanceID: Date.now().toString() };
   }
 
+  createEmptyResponse(): DemoItem[] {
+    return [];
+  }
+
   handleGet(
     resourceName: string,
-  ): DemoItem[] | Promise<DemoItem[]> | ContinuousGet<DemoItem> {
+  ): DemoItem[] | Promise<DemoItem[]> | ContinuousGet<DemoItem[]> {
     switch (resourceName) {
       case 'haha':
         return [
@@ -51,20 +61,12 @@ export default class DemoDataProvider extends DataProvider<
         return [{ id: 'a' }, { id: 'b' }];
     }
   }
-
-  handleCreate(): void | Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
-  handleUpdate(): void | Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
-  handlePatch(): void | Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
-  handleRemove(): void | Promise<void> {
-    throw new Error('Method not implemented.');
-  }
 }
+
+const DemoDataProviderWithEvents = eventPlugin(DemoDataProvider);
+
+export type DemoDataProviderType = InstanceType<
+  typeof DemoDataProviderWithEvents
+>;
+
+export default DemoDataProviderWithEvents;

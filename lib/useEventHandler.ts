@@ -62,7 +62,7 @@ export default function useEventHandler<
     setOptions(optionsProp);
   }
 
-  const isDisabled = Boolean(disabled || currentResource?.isEmpty);
+  const isDisabled = Boolean(disabled || currentResource?.isDisabled);
 
   useEffect(() => {
     if (eventReceiver == null || isDisabled) return undefined;
