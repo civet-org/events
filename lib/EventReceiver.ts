@@ -1,8 +1,8 @@
-import type {
-  Constructor,
-  GenericDataProvider,
+import {
   Notifier,
-  ResourceContextValue,
+  type Constructor,
+  type GenericDataProvider,
+  type ResourceContextValue,
 } from '@civet/core';
 
 export default abstract class EventReceiver<
@@ -19,18 +19,21 @@ export default abstract class EventReceiver<
     ResourceI extends Resource = Resource,
     OptionsI extends Options = Options,
   >(
-    resource: Notifier<[ResourceI | undefined]>,
+    resource: Notifier<[ResourceI | undefined]> | undefined,
     options: OptionsI | undefined,
     handler: (events: EventI[]) => void,
   ): () => void {
     if (typeof handler !== 'function') {
       throw new Error('Handler must be a function');
     }
+    const hasResource = resource != null;
+    if (!hasResource) resource = new Notifier();
     const unsubscribe = this.handleSubscribe(
       resource as Notifier<[Resource | undefined]>,
       options,
       handler as (events: Event[]) => void,
     );
+    if (!hasResource) resource?.trigger(undefined);
     if (typeof unsubscribe !== 'function') {
       console.warn(
         'EventReceiver.handleSubscribe should return a callback to cancel the subscription. Ignoring this warning may result in the execution of obsolete handlers and potential memory leaks.',
