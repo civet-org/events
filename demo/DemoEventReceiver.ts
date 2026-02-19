@@ -1,6 +1,6 @@
-import type { ResourceContextValue } from '@civet/core';
+import type { Notifier, ResourceContextValue } from '@civet/core';
 import EventReceiver from '@/EventReceiver';
-import type DemoDataProvider from './DemoDataProvider';
+import type { DemoDataProviderType } from './DemoDataProvider';
 
 export type DemoOptions = {
   eventDemo?: boolean;
@@ -12,8 +12,8 @@ export type DemoEvent = {
 };
 
 export default class DemoEventReceiver extends EventReceiver<
-  ResourceContextValue<DemoDataProvider>,
   DemoEvent,
+  ResourceContextValue<DemoDataProviderType>,
   DemoOptions
 > {
   static TEST = true;
@@ -24,23 +24,34 @@ export default class DemoEventReceiver extends EventReceiver<
   }
 
   handleSubscribe(
-    resource: ResourceContextValue<DemoDataProvider>,
+    resource: Notifier<
+      [ResourceContextValue<DemoDataProviderType> | undefined]
+    >,
     _options: DemoOptions | undefined,
     handler: (events: DemoEvent[]) => void,
   ): () => void {
-    const interval = setInterval(() => {
-      switch (resource.name) {
-        case 'haha':
-          handler([
-            { id: 'a', name: 'A' },
-            { id: 'b', name: 'B' },
-          ]);
-          break;
+    let interval: number;
 
-        default:
-          handler([{ id: 'a' }, { id: 'b' }]);
+    const unsub = resource.subscribe((resource) => {
+      if (interval != null) {
+        unsub();
+        return;
       }
-    }, 5000);
+
+      interval = setInterval(() => {
+        switch (resource?.name) {
+          case 'haha':
+            handler([
+              { id: 'a', name: 'A' },
+              { id: 'b', name: 'B' },
+            ]);
+            break;
+
+          default:
+            handler([{ id: 'a' }, { id: 'b' }]);
+        }
+      }, 5000);
+    });
 
     return () => {
       clearInterval(interval);

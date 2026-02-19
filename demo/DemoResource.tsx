@@ -10,16 +10,16 @@ type HahaEvent = DemoEvent & {
   name: string;
 };
 
+function onEvent(event: unknown) {
+  console.log('Got event', (event as HahaEvent).name);
+  return false;
+}
+
 export default function DemoResource() {
   const resource = useResource<DemoDataProviderType, HahaItem[]>({
     name: 'haha',
     query: undefined,
-    events: {
-      onEvent: (event: unknown) => {
-        console.log('Got event', (event as HahaEvent).name);
-        return false;
-      },
-    },
+    events: { onEvent },
   });
 
   return (

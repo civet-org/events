@@ -14,8 +14,8 @@ import useEventHandler from './useEventHandler';
 
 type EventProps<
   EventReceiverI extends GenericEventReceiver,
-  OptionsI extends InferOptions<EventReceiverI> = InferOptions<EventReceiverI>,
   EventI extends InferEvent<EventReceiverI> = InferEvent<EventReceiverI>,
+  OptionsI extends InferOptions<EventReceiverI> = InferOptions<EventReceiverI>,
 > = {
   events?:
     | {
