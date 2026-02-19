@@ -1,24 +1,25 @@
 import type {
   Constructor,
   GenericDataProvider,
+  Notifier,
   ResourceContextValue,
 } from '@civet/core';
 
 export default abstract class EventReceiver<
-  Resource extends ResourceContextValue<GenericDataProvider>,
   Event,
+  Resource extends ResourceContextValue<GenericDataProvider>,
   Options,
 > {
-  readonly _inferResource!: Resource;
   readonly _inferEvent!: Event;
+  readonly _inferResource!: Resource;
   readonly _inferOptions!: Options;
 
   subscribe<
+    EventI extends Event = Event,
     ResourceI extends Resource = Resource,
     OptionsI extends Options = Options,
-    EventI extends Event = Event,
   >(
-    resource: ResourceI,
+    resource: Notifier<[ResourceI | undefined]>,
     options: OptionsI | undefined,
     handler: (events: EventI[]) => void,
   ): () => void {
@@ -26,7 +27,7 @@ export default abstract class EventReceiver<
       throw new Error('Handler must be a function');
     }
     const unsubscribe = this.handleSubscribe(
-      resource,
+      resource as Notifier<[Resource | undefined]>,
       options,
       handler as (events: Event[]) => void,
     );
@@ -39,7 +40,7 @@ export default abstract class EventReceiver<
   }
 
   abstract handleSubscribe(
-    resource: Resource,
+    resource: Notifier<[Resource | undefined]>,
     options: Options | undefined,
     handler: (events: Event[]) => void,
   ): () => void;
@@ -64,16 +65,16 @@ export type EventReceiverImplementation<
 >;
 
 export type GenericEventReceiver = EventReceiver<
-  ResourceContextValue<GenericDataProvider>,
   unknown,
+  ResourceContextValue<GenericDataProvider>,
   unknown
 >;
 
-export type InferResource<EventReceiverI extends GenericEventReceiver> =
-  EventReceiverI['_inferResource'];
-
 export type InferEvent<EventReceiverI extends GenericEventReceiver> =
   EventReceiverI['_inferEvent'];
+
+export type InferResource<EventReceiverI extends GenericEventReceiver> =
+  EventReceiverI['_inferResource'];
 
 export type InferOptions<EventReceiverI extends GenericEventReceiver> =
   EventReceiverI['_inferOptions'];

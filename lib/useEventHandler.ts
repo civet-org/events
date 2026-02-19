@@ -1,4 +1,4 @@
-import { useResourceContext } from '@civet/core';
+import { Notifier, useResourceContext } from '@civet/core';
 import deepEquals from 'fast-deep-equal';
 import { useEffect, useState } from 'react';
 import type {
@@ -18,10 +18,10 @@ import { useConfigContext } from './context';
  */
 export default function useEventHandler<
   EventReceiverI extends GenericEventReceiver,
+  EventI extends InferEvent<EventReceiverI> = InferEvent<EventReceiverI>,
   ResourceI extends InferResource<EventReceiverI> =
     InferResource<EventReceiverI>,
   OptionsI extends InferOptions<EventReceiverI> = InferOptions<EventReceiverI>,
-  EventI extends InferEvent<EventReceiverI> = InferEvent<EventReceiverI>,
 >({
   eventReceiver: eventReceiverProp,
   resource: resourceProp,
@@ -33,7 +33,7 @@ export default function useEventHandler<
   /** EventReceiver to be used */
   eventReceiver?: EventReceiverI;
   /** ResourceContext to be used */
-  resource?: ResourceI;
+  resource?: ResourceI | null;
   /** Disables the event handler */
   disabled?: boolean;
   /** Options for the EventReceiver */
@@ -50,9 +50,12 @@ export default function useEventHandler<
   const eventReceiver = eventReceiverProp || configContext.eventReceiver;
 
   const resourceContext = useResourceContext() as ResourceI;
-  const currentResource = resourceProp || resourceContext;
+  const currentResource =
+    resourceProp === null ? undefined : resourceProp || resourceContext;
 
-  const [resource, setResource] = useState<ResourceI>(currentResource);
+  const [resource, setResource] = useState<ResourceI | undefined>(
+    currentResource,
+  );
   if (currentResource?.request !== resource?.request) {
     setResource(currentResource);
   }
@@ -64,10 +67,27 @@ export default function useEventHandler<
 
   const isDisabled = Boolean(disabled || currentResource?.isDisabled);
 
+  const [
+    [currentRequest, currentRevision, currentResourceNotifier] = [],
+    setResourceNotifier,
+  ] =
+    useState<
+      [
+        string | undefined,
+        string | undefined,
+        Notifier<[ResourceI | undefined]>,
+      ]
+    >();
+
   useEffect(() => {
-    if (eventReceiver == null || isDisabled) return undefined;
-    const unsubscribe = eventReceiver.subscribe<ResourceI, OptionsI, EventI>(
-      resource,
+    if (eventReceiver == null || isDisabled) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setResourceNotifier(undefined);
+      return undefined;
+    }
+    const resourceNotifier = new Notifier<[ResourceI | undefined]>();
+    const unsubscribe = eventReceiver.subscribe<EventI, ResourceI, OptionsI>(
+      resourceNotifier,
       options,
       (data) => {
         if ((data?.length || 0) === 0) return;
@@ -89,6 +109,27 @@ export default function useEventHandler<
         }
       },
     );
+    resourceNotifier.trigger(resource);
+    setResourceNotifier([
+      resource?.request,
+      resource?.revision,
+      resourceNotifier,
+    ]);
     return unsubscribe;
   }, [eventReceiver, isDisabled, resource, options, onEvent, onNotify]);
+
+  useEffect(() => {
+    if (
+      currentResourceNotifier == null ||
+      currentResource?.request !== currentRequest ||
+      currentResource?.revision === currentRevision
+    )
+      return;
+    currentResourceNotifier.trigger(currentResource);
+  }, [
+    currentResourceNotifier,
+    currentResource,
+    currentRequest,
+    currentRevision,
+  ]);
 }

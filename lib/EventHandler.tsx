@@ -16,10 +16,10 @@ import useEventHandler from './useEventHandler';
  */
 export default function EventHandler<
   EventReceiverI extends GenericEventReceiver,
+  EventI extends InferEvent<EventReceiverI> = InferEvent<EventReceiverI>,
   ResourceI extends InferResource<EventReceiverI> =
     InferResource<EventReceiverI>,
   OptionsI extends InferOptions<EventReceiverI> = InferOptions<EventReceiverI>,
-  EventI extends InferEvent<EventReceiverI> = InferEvent<EventReceiverI>,
 >({
   eventReceiver,
   resource,

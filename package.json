@@ -1,13 +1,13 @@
 {
   "name": "@civet/events",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "Civet",
   "author": {
     "name": "Aaron Burmeister"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/civet-org/events.git"
+    "url": "git+https://github.com/civet-org/events.git"
   },
   "bugs": {
     "url": "https://github.com/civet-org/events/issues"
@@ -55,7 +55,7 @@
     "react-dom": ">=18.0"
   },
   "devDependencies": {
-    "@civet/core": "^6.0.2",
+    "@civet/core": "^6.1.1",
     "@eslint/js": "^9.35.0",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
