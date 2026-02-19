@@ -55,7 +55,7 @@
     "react-dom": ">=18.0"
   },
   "devDependencies": {
-    "@civet/core": "^6.0.2",
+    "@civet/core": "^6.1.1",
     "@eslint/js": "^9.35.0",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
