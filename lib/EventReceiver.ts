@@ -45,7 +45,7 @@ export default abstract class EventReceiver<
   }
 
   abstract handleSubscribe(
-    resource: Notifier<[Resource | undefined]>,
+    resourceNotifier: Notifier<[Resource | undefined]>,
     options: Options | undefined,
     handler: (events: Event[]) => void,
   ): () => void;
@@ -62,7 +62,7 @@ export type EventReceiverImplementation<
   ConstructorArgs,
   EventReceiverI & {
     handleSubscribe(
-      resource: InferResource<EventReceiverI>,
+      resourceNotifier: Notifier<[InferResource<EventReceiverI> | undefined]>,
       options: InferOptions<EventReceiverI> | undefined,
       handler: (events: InferEvent<EventReceiverI>[]) => void,
     ): () => void;
