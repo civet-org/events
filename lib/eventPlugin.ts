@@ -44,6 +44,7 @@ const eventPlugin = createPlugin<
   (baseDataProviderClass) =>
     class EventDataProvider extends baseDataProviderClass {
       extend(extend: DataProviderExtend): void {
+        super.extend(extend);
         extend.context(
           (
             context: ResourceContextValue<GenericDataProvider>,
