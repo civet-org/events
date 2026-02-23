@@ -24,7 +24,7 @@ export default class DemoEventReceiver extends EventReceiver<
   }
 
   handleSubscribe(
-    resource: Notifier<
+    resourceNotifier: Notifier<
       [ResourceContextValue<DemoDataProviderType> | undefined]
     >,
     _options: DemoOptions | undefined,
@@ -32,7 +32,7 @@ export default class DemoEventReceiver extends EventReceiver<
   ): () => void {
     let interval: number;
 
-    const unsub = resource.subscribe((resource) => {
+    const unsub = resourceNotifier.subscribe((resource) => {
       if (interval != null) {
         unsub();
         return;

@@ -1,8 +1,8 @@
 import {
   createContext,
   useContext,
+  type Consumer,
   type ConsumerProps,
-  type ExoticComponent,
   type ReactNode,
 } from 'react';
 import type { GenericEventReceiver } from './EventReceiver';
@@ -15,12 +15,13 @@ export const ConfigContext = createContext<
   ConfigContextValue<GenericEventReceiver>
 >({});
 ConfigContext.displayName = 'Events.ConfigContext';
-export const ConfigConsumer =
-  ConfigContext.Consumer as ExoticComponent<GenericEventReceiver> & {
-    <DataProviderI extends GenericEventReceiver>(
-      props: ConsumerProps<ConfigContextValue<DataProviderI>>,
-    ): ReactNode;
-  };
+export const ConfigConsumer = ConfigContext.Consumer as Consumer<
+  ConfigContextValue<GenericEventReceiver>
+> & {
+  <DataProviderI extends GenericEventReceiver>(
+    props: ConsumerProps<ConfigContextValue<DataProviderI>>,
+  ): ReactNode;
+};
 export const useConfigContext = <
   DataProviderI extends GenericEventReceiver,
 >() => useContext(ConfigContext) as ConfigContextValue<DataProviderI>;
