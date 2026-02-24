@@ -55,7 +55,7 @@
     "react-dom": ">=18.0"
   },
   "devDependencies": {
-    "@civet/core": "^6.2.2",
+    "@civet/core": "^6.2.4",
     "@eslint/js": "^9.39.3",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
@@ -67,14 +67,14 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
     "eslint-plugin-unused-imports": "^4.2.0",
     "globals": "^17.3.0",
     "prettier": "^3.6.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.56.0",
+    "typescript-eslint": "^8.56.1",
     "vite": "^7.1.5",
     "vite-plugin-dts": "^4.5.4",
     "vite-tsconfig-paths": "^6.1.1"
