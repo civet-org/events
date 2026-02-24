@@ -9,6 +9,30 @@ import type {
 } from './EventReceiver';
 import { useConfigContext } from './context';
 
+export type EventProps<
+  EventReceiverI extends GenericEventReceiver,
+  EventI extends InferEvent<EventReceiverI> = InferEvent<EventReceiverI>,
+  ResourceI extends InferResource<EventReceiverI> =
+    InferResource<EventReceiverI>,
+  OptionsI extends InferOptions<EventReceiverI> = InferOptions<EventReceiverI>,
+> = {
+  /** EventReceiver to be used */
+  eventReceiver?: EventReceiverI;
+  /** ResourceContext to be used */
+  resource?: ResourceI | null;
+  /** Disables the event handler */
+  disabled?: boolean;
+  /** Options for the EventReceiver */
+  options?: OptionsI;
+  /** Callback to filter events and handle your own event logic - if true is returned, the event does not cause the resource to update */
+  onEvent?: (event: EventI) => boolean;
+  /** Provides information on when the resource has been requested to update - events contains the events that lead to the update */
+  onNotify?: (
+    next: { request: string; revision: string },
+    events: EventI[],
+  ) => void;
+};
+
 /**
  * Enables automatic updating for a Resource component or useResource hook by subscribing to an EventReceiver.
  *
@@ -29,23 +53,7 @@ export default function useEventHandler<
   options: optionsProp,
   onEvent,
   onNotify,
-}: {
-  /** EventReceiver to be used */
-  eventReceiver?: EventReceiverI;
-  /** ResourceContext to be used */
-  resource?: ResourceI | null;
-  /** Disables the event handler */
-  disabled?: boolean;
-  /** Options for the EventReceiver */
-  options?: OptionsI;
-  /** Callback to filter events and handle your own event logic - if true is returned, the event does not cause the resource to update */
-  onEvent?: (event: EventI) => boolean;
-  /** Provides information on when the resource has been requested to update - events contains the events that lead to the update */
-  onNotify?: (
-    next: { request: string; revision: string },
-    events: EventI[],
-  ) => void;
-}): void {
+}: EventProps<EventReceiverI, EventI, ResourceI, OptionsI>): void {
   const configContext = useConfigContext<EventReceiverI>();
   const eventReceiver = eventReceiverProp || configContext.eventReceiver;
 
