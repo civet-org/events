@@ -13,4 +13,5 @@ export type {
   InferResource,
 } from './EventReceiver';
 export { default as useEventHandler } from './useEventHandler';
+export type { EventProps } from './useEventHandler';
 export { ConfigConsumer, useConfigContext };
